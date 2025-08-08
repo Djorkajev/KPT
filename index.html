@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Poker Fan Hub – EPT/WSOP styl</title>
+  <meta name="description" content="Fanouškovská stránka pokeru inspirovaná EPT/WSOP s dlaždicemi pro 8 hráčů." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --card: #14141a;
+      --border: #262635;
+      --accent: #d4af37; /* zlato (WSOP) */
+      --accent-2: #1f2937;
+    }
+    body { margin:0; font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; color:var(--text); background: radial-gradient(1200px 800px at 10% -10%, rgba(212,175,55,0.12), transparent 60%), radial-gradient(1000px 700px at 110% 10%, rgba(29,78,216,0.10), transparent 60%), var(--bg); }
+    .wsop { --accent:#d4af37; --accent-2:#4b5563; }
+    .ept { --accent:#2563eb; --accent-2:#60a5fa; }
+
+    .container { max-width:1200px; margin:0 auto; padding:24px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0 20px; border-bottom:1px solid var(--border); }
+
+    .brand { display:flex; align-items:center; gap:14px; }
+    .logo { width:42px; height:42px; border-radius:10px; background: linear-gradient(145deg, var(--accent) 0%, rgba(255,255,255,0.2) 8%, transparent 10%) , linear-gradient(145deg, rgba(255,255,255,0.1), transparent 60%), #111319; box-shadow: 0 0 0 1px var(--border), 0 10px 30px rgba(0,0,0,0.45) inset; position:relative; }
+    .logo:after { content:"♠"; position:absolute; inset:0; display:grid; place-items:center; color:var(--accent); font-size:22px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
+    h1 { font-size: clamp(20px, 3.2vw, 34px); margin:0; letter-spacing:0.5px; }
+    h1 .accent { background: linear-gradient(90deg, var(--accent), #fff); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800; }
+    .subtitle { color:var(--muted); font-size:14px; margin-top:4px; }
+
+    .controls { display:flex; align-items:center; gap:10px; }
+    .btn { appearance:none; border:1px solid var(--border); background:#0f1117; color:var(--text); padding:10px 14px; border-radius:10px; font-weight:600; cursor:pointer; transition: transform .06s ease, border-color .2s ease, background .2s ease; }
+    .btn:hover { transform: translateY(-1px); border-color:var(--accent); }
+    .btn.primary { background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.2)), #12141b; border-color:var(--accent); box-shadow: 0 0 0 1px rgba(0,0,0,0.2) inset, 0 10px 30px rgba(0,0,0,0.3) inset; }
+
+    .hero { display:grid; grid-template-columns: 1fr; gap:14px; padding:24px 0 8px; }
+    .hero p { margin:0; font-size:15px; color:var(--muted); }
+
+    /* Grid */
+    .grid { display:grid; gap:18px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding:16px 0 34px; }
+
+    .player-card { position:relative; border:1px solid var(--border); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2)), var(--card); border-radius:18px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.35); transition: transform .12s ease, border-color .2s ease; }
+    .player-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+
+    .art { height:140px; background:
+      radial-gradient(120px 80px at 20% 20%, rgba(255,255,255,0.06), transparent 60%),
+      radial-gradient(120px 80px at 80% 0%, rgba(255,255,255,0.05), transparent 60%),
+      linear-gradient(135deg, rgba(255,255,255,0.06), transparent 40%),
+      linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.35)),
+      #0f1219; display:flex; align-items:flex-end; justify-content:space-between; padding:10px; }
+
+    .chip { background: conic-gradient(from 0turn, var(--accent) 0 25%, transparent 25% 50%, var(--accent) 50% 75%, transparent 75% 100%); width:44px; height:44px; border-radius:50%; display:grid; place-items:center; box-shadow:0 4px 18px rgba(0,0,0,0.45); border:3px solid #111318; }
+    .chip span { background:#111318; border-radius:50%; width:24px; height:24px; display:grid; place-items:center; font-weight:700; font-size:14px; }
+
+    .badge { border:1px solid var(--border); color:var(--accent); background: rgba(255,255,255,0.02); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; }
+
+    .body { padding:14px 14px 18px; display:flex; flex-direction:column; gap:10px; }
+    .player-name { outline:none; margin:0; font-size:18px; font-weight:800; letter-spacing:0.3px; }
+    .player-name:empty:before { content: attr(data-placeholder); color:var(--muted); font-weight:600; }
+    .player-meta { font-size:12px; color:var(--muted); display:flex; align-items:center; gap:8px; }
+
+    .footer { border-top:1px solid var(--border); padding:16px 0 30px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .tip { color:var(--muted); font-size:13px; }
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); display:inline-block; margin-right:6px; }
+
+    /* Small helper for kbd hints */
+    kbd { background:#0c0f15; border:1px solid var(--border); border-bottom-color:#151827; border-radius:6px; padding:2px 6px; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:12px; }
+
+    @media (min-width: 920px) {
+      .hero { grid-template-columns: 1.5fr 1fr; align-items:center; }
+      .hero-copy { padding-right:14px; }
+    }
+  </style>
+</head>
+<body class="wsop">
+  <div class="container">
+    <header>
+      <div class="brand" aria-label="Poker Fan Hub">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1><span class="accent">POKER FANS</span> Hub</h1>
+          <div class="subtitle">Inspirováno WSOP / EPT • 8 dlaždic pro konkrétní hráče</div>
+        </div>
+      </div>
+      <nav class="controls" aria-label="Přepnutí vzhledu">
+        <button id="theme-wsop" class="btn primary" title="WSOP styl (zlatá/černá)">WSOP styl</button>
+        <button id="theme-ept" class="btn" title="EPT styl (modrá)">EPT styl</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p>Vítej! Tohle je jednoduchý přehled osmi hráčů v duchu největších živých sérií. Klikni na jména a přepiš je na konkrétní hráče – změny se ukládají do prohlížeče. Nahoře můžeš přepínat motiv mezi <strong>WSOP</strong> a <strong>EPT</strong>.</p>
+      </div>
+      <div style="justify-self:end; align-self:stretch; display:flex; gap:14px;">
+        <div class="badge" aria-hidden="true">No-Limit Hold’em</div>
+        <div class="badge" aria-hidden="true">High Roller</div>
+      </div>
+    </section>
+
+    <main class="grid" aria-label="Seznam hráčů">
+      <!-- 8 dlaždic -->
+      <article class="player-card" aria-label="Hráč 1">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#1"><span>1</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 1</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 2">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#2"><span>2</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 2</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 3">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#3"><span>3</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 3</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 4">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#4"><span>4</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 4</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 5">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#5"><span>5</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 5</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 6">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#6"><span>6</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 6</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 7">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#7"><span>7</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 7</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+
+      <article class="player-card" aria-label="Hráč 8">
+        <div class="art">
+          <div class="badge">WSOP / EPT</div>
+          <div class="chip" title="#8"><span>8</span></div>
+        </div>
+        <div class="body">
+          <h3 class="player-name" contenteditable="true" spellcheck="false" data-placeholder="Zadej jméno hráče">Hráč 8</h3>
+          <div class="player-meta"><span class="dot"></span> Připraveno k úpravě</div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="footer">
+      <div class="tip">💡 Tip: Klikni na jméno, napiš konkrétního hráče (např. „Daniel Negreanu“) a stiskni <kbd>Enter</kbd>. Jména se ukládají do <em>localStorage</em>.</div>
+      <div class="tip">Motiv: <strong>WSOP</strong> (výchozí) / <strong>EPT</strong>.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Téma přepínač
+    const btnWSOP = document.getElementById('theme-wsop');
+    const btnEPT = document.getElementById('theme-ept');
+    const BODY = document.body;
+
+    function applyTheme(theme){
+      BODY.classList.remove('wsop','ept');
+      BODY.classList.add(theme);
+      localStorage.setItem('pokerhub-theme', theme);
+      btnWSOP.classList.toggle('primary', theme==='wsop');
+      btnEPT.classList.toggle('primary', theme==='ept');
+    }
+
+    btnWSOP.addEventListener('click', ()=> applyTheme('wsop'));
+    btnEPT.addEventListener('click', ()=> applyTheme('ept'));
+
+    // Načtení uloženého tématu
+    const savedTheme = localStorage.getItem('pokerhub-theme');
+    if(savedTheme){ applyTheme(savedTheme); }
+
+    // Ukládání jmen hráčů
+    const names = document.querySelectorAll('.player-name');
+    names.forEach((el, i) => {
+      const key = `pokerhub-player-${i+1}`;
+      const saved = localStorage.getItem(key);
+      if(saved) el.textContent = saved;
+      el.addEventListener('input', () => {
+        // oříznout vícenásobné mezery
+        const value = el.textContent.replace(/\s+/g,' ').trim();
+        localStorage.setItem(key, value);
+      });
+      el.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') { e.preventDefault(); el.blur(); }
+      });
+    });
+  </script>
+</body>
+</html>
